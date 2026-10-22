@@ -10,6 +10,46 @@
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
+void thread_led_blinky(void *p1, void *p2, void *p3)
+
+{
+
+    ARG_UNUSED(p1);
+
+    ARG_UNUSED(p2);
+
+    ARG_UNUSED(p3);
+
+ 
+
+    if (!gpio_is_ready_dt(&led)) {
+
+        return;
+
+    }
+
+    if (gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE) < 0) {
+
+        return;
+
+    }
+
+ 
+
+    while (1) {
+
+        gpio_pin_set_dt(&led, 1);
+
+        k_msleep(1000);
+
+        gpio_pin_set_dt(&led, 0);
+
+        k_msleep(2000);
+
+    }
+
+}
+
 int main(void)
 {
     int ret;
@@ -27,13 +67,6 @@ int main(void)
 
     printk("Zephyr STM32F4 Discovery: toggling LED on PE4\n");
 
-    while (1) {
-        ret = gpio_pin_toggle_dt(&led);
-        if (ret < 0) {
-            printk("Failed to toggle LED: %d\n", ret);
-        }
-        k_msleep(500);
-    }
 
     return 0;
 }
