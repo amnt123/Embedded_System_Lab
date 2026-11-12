@@ -14,12 +14,6 @@ void thread_led_blinky(void *p1, void *p2, void *p3)
 
 {
 
-    ARG_UNUSED(p1);
-
-    ARG_UNUSED(p2);
-
-    ARG_UNUSED(p3);
-
  
 
     if (!gpio_is_ready_dt(&led)) {
@@ -49,6 +43,9 @@ void thread_led_blinky(void *p1, void *p2, void *p3)
     }
 
 }
+
+ 
+K_THREAD_DEFINE(led_blinky_id, 1024, thread_led_blinky, NULL, NULL, NULL, 7, 0, 0);
 
 int main(void)
 {
